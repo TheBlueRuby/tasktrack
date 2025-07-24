@@ -1,11 +1,8 @@
-use std::{
-    env, fs,
-    path::PathBuf,
-};
+use std::{fs, path::PathBuf};
 
 //TODO: custom task and config file
 pub fn get_task_file() -> String {
-    let task_file: PathBuf = env::home_dir()
+    let task_file: PathBuf = dirs::home_dir()
         .unwrap_or_else(|| {
             eprintln!("Could not determine home directory.");
             PathBuf::from(".")
@@ -33,4 +30,3 @@ pub fn read_task_file() -> String {
         }
     }
 }
-
