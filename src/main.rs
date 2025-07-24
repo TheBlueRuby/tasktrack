@@ -27,6 +27,7 @@ fn main() {
             Operation::Add(add_args) => task::add(add_args.clone()),
             Operation::Update(update_args) => task::update(update_args.clone()),
             Operation::Remove(read_args) => task::remove(read_args.clone()),
+            Operation::Summary => task::summary(),
         },
     }
 }

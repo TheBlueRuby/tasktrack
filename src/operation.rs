@@ -7,6 +7,7 @@ pub enum Operation {
     Add(AddArgs),
     Update(UpdateArgs),
     Remove(ReadArgs),
+    Summary,
 }
 
 #[derive(Args, Debug, Clone)]

@@ -119,3 +119,17 @@ pub fn update(
         eprintln!("Task with ID '{}' not found.", id);
     }
 }
+
+// intended for .bashrc or similar
+pub fn summary() {
+    let tasks: Vec<task::Task> =
+        serde_json::from_str(&read_task_file()).expect("Failed to parse tasks file");
+
+    // Exit quietly if there are no tasks
+    // to avoid unneeded terminal clutter
+    if tasks.is_empty() {
+        return;
+    }
+
+    println!("[TaskTrack] Tasks Remaining: {}", tasks.len());
+}
