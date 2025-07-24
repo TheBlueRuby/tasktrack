@@ -14,6 +14,7 @@ pub struct Task {
     pub id: String,
     pub name: String,
     pub description: Option<String>,
+    pub tags: Option<Vec<String>>,
 }
 
 pub fn list() {
@@ -33,6 +34,7 @@ pub fn add(
         id,
         name,
         description,
+        tags,
     }: AddArgs,
 ) {
     let mut tasks: Vec<task::Task> =
@@ -47,6 +49,7 @@ pub fn add(
         id,
         name,
         description,
+        tags,
     };
 
     tasks.push(new_task);
@@ -64,10 +67,11 @@ pub fn show(ReadArgs { id }: ReadArgs) {
 
     if let Some(task) = tasks.iter().find(|t| t.id == id) {
         println!(
-            "ID: {}\nName: {}\nDescription: {}",
+            "ID: {}\nName: {}\nDescription: {}\nTags: {}",
             task.id,
             task.name,
-            task.description.as_deref().unwrap_or("None")
+            task.description.as_deref().unwrap_or("None"),
+            task.tags.as_deref().unwrap_or(&[]).join(", ")
         );
     } else {
         eprintln!("Task with ID '{}' not found.", id);
@@ -99,6 +103,7 @@ pub fn update(
         id,
         name,
         description,
+        tags,
     }: UpdateArgs,
 ) {
     let mut tasks: Vec<task::Task> =
@@ -110,6 +115,9 @@ pub fn update(
         }
         if let Some(new_description) = description {
             task.description = Some(new_description);
+        }
+        if let Some(new_tags) = tags {
+            task.tags = Some(new_tags);
         }
 
         fs::write(get_task_file(), serde_json::to_string_pretty(&tasks).unwrap())
