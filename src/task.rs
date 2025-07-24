@@ -38,7 +38,11 @@ pub fn list(ListArgs { tags }: ListArgs) {
     for task in &tasks {
         task_list.push_str(&format!("{}: {}, Tags: {}\n", task.id, task.name, task.tags.as_deref().unwrap_or(&[]).join(", ")));
     }
-    println!("Showing {} tasks of {}:\n{}", tasks.len(), total_tasks, task_list);
+    if tasks.is_empty() {
+        println!("No tasks found matching the criteria. Total tasks: {}", total_tasks);
+    } else {
+        println!("Showing {} tasks of {}:\n{}", tasks.len(), total_tasks, task_list);
+    }
 }
 
 pub fn add(
