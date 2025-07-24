@@ -7,34 +7,34 @@ pub enum Operation {
     Add(AddArgs),
     Update(UpdateArgs),
     Remove(ReadArgs),
+    Summary,
 }
 
-#[derive(Args, Debug)]
+#[derive(Args, Debug, Clone)]
 pub struct ReadArgs {
-    #[arg(short, long)]
-    id: String,
+    pub id: String,
 }
 
-#[derive(Args, Debug)]
+#[derive(Args, Debug, Clone)]
 pub struct AddArgs {
     #[arg(short, long)]
-    id: String,
+    pub id: String,
 
     #[arg(short, long)]
-    name: String,
+    pub name: String,
 
     #[arg(short, long)]
-    description: Option<String>,
+    pub description: Option<String>,
 }
 
-#[derive(Args, Debug)]
+#[derive(Args, Debug, Clone)]
 pub struct UpdateArgs {
     #[arg(short, long)]
-    id: String,
+    pub id: String,
 
     #[arg(short, long)]
-    name: Option<String>,
+    pub name: Option<String>,
 
     #[arg(short, long)]
-    description: Option<String>,
+    pub description: Option<String>,
 }
