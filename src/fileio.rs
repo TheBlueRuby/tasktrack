@@ -88,3 +88,23 @@ pub fn show(ReadArgs { id }: ReadArgs) {
         eprintln!("Task with ID '{}' not found.", id);
     }
 }
+
+pub fn remove(ReadArgs { id }: ReadArgs) {
+    println!("Are you sure you want to remove the task '{}'?", id);
+    if !crate::util::get_yes_no() {
+        println!("Task removal cancelled.");
+        return;
+    }
+
+    let mut tasks: Vec<task::Task> =
+        serde_json::from_str(&read_task_file()).expect("Failed to parse tasks file");
+
+    if let Some(pos) = tasks.iter().position(|t| t.id == id) {
+        tasks.remove(pos);
+        fs::write(get_task_file(), serde_json::to_string(&tasks).unwrap())
+            .expect("Failed to write tasks file");
+        println!("Task '{}' removed successfully.", id);
+    } else {
+        eprintln!("Task '{}' not found.", id);
+    }
+}

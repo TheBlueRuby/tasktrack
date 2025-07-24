@@ -26,7 +26,7 @@ fn main() {
             Operation::Show(read_args) => fileio::show(read_args.clone()),
             Operation::Add(add_args) => fileio::add(add_args.clone()),
             Operation::Update(update_args) => todo!("{:?}", update_args),
-            Operation::Remove(read_args) => todo!("{:?}", read_args),
+            Operation::Remove(read_args) => fileio::remove(read_args.clone()),
         },
     }
 }
