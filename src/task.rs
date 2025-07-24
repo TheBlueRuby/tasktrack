@@ -3,7 +3,7 @@ use std::fs;
 use serde::{Deserialize, Serialize};
 
 use crate::fileio::{get_task_file, read_task_file};
-use crate::operation::UpdateArgs;
+use crate::operation::{ListArgs, UpdateArgs};
 use crate::{
     operation::{AddArgs, ReadArgs},
     task,
@@ -17,7 +17,7 @@ pub struct Task {
     pub tags: Option<Vec<String>>,
 }
 
-pub fn list() {
+pub fn list(ListArgs { tags }: ListArgs) {
     let mut task_list = String::new();
 
     let tasks: Vec<task::Task> =

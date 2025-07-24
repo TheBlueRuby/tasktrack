@@ -22,7 +22,7 @@ fn main() {
             println!("No operation specified. Use --help for more information.");
         }
         Some(op) => match op {
-            Operation::List => task::list(),
+            Operation::List(list_args) => task::list(list_args.clone()),
             Operation::Show(read_args) => task::show(read_args.clone()),
             Operation::Add(add_args) => task::add(add_args.clone()),
             Operation::Update(update_args) => task::update(update_args.clone()),
