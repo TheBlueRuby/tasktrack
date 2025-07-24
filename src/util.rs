@@ -1,5 +1,3 @@
-use std::io::Read;
-
 pub fn get_yes_no() -> bool {
     println!("Enter response [y/n]:");
     loop {
