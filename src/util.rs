@@ -10,3 +10,11 @@ pub fn get_yes_no() -> bool {
         }
     }
 }
+
+
+pub fn format_tags(tags: &Option<Vec<String>>) -> String {
+    match tags {
+        Some(t) if !t.is_empty() => t.join(", "),
+        _ => "None".to_string(),
+    }
+}

@@ -2,12 +2,18 @@ use clap::{Args, Subcommand};
 
 #[derive(Subcommand, Debug)]
 pub enum Operation {
-    List,
+    List(ListArgs),
     Show(ReadArgs),
     Add(AddArgs),
     Update(UpdateArgs),
     Remove(ReadArgs),
     Summary,
+}
+
+#[derive(Args, Debug, Clone)]
+pub struct ListArgs {
+    #[arg(short, long)]
+    pub tags: Option<Vec<String>>,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -25,6 +31,9 @@ pub struct AddArgs {
 
     #[arg(short, long)]
     pub description: Option<String>,
+
+    #[arg(short, long)]
+    pub tags: Option<Vec<String>>,
 }
 
 #[derive(Args, Debug, Clone)]
@@ -37,4 +46,7 @@ pub struct UpdateArgs {
 
     #[arg(short, long)]
     pub description: Option<String>,
+
+    #[arg(short, long)]
+    pub tags: Option<Vec<String>>,
 }
