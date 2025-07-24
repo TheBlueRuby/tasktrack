@@ -4,6 +4,7 @@ use serde::{Deserialize, Serialize};
 
 use crate::fileio::{get_task_file, read_task_file};
 use crate::operation::{ListArgs, UpdateArgs};
+use crate::util::format_tags;
 use crate::{
     operation::{AddArgs, ReadArgs},
     task,
@@ -34,14 +35,27 @@ pub fn list(ListArgs { tags }: ListArgs) {
             }
         });
     }
-    
+
     for task in &tasks {
-        task_list.push_str(&format!("{}: {}, Tags: {}\n", task.id, task.name, task.tags.as_deref().unwrap_or(&[]).join(", ")));
+        task_list.push_str(&format!(
+            "{}: {}, Tags: {}\n",
+            task.id,
+            task.name,
+            format_tags(&task.tags)
+        ));
     }
     if tasks.is_empty() {
-        println!("No tasks found matching the criteria. Total tasks: {}", total_tasks);
+        println!(
+            "No tasks found matching the criteria. Total tasks: {}",
+            total_tasks
+        );
     } else {
-        println!("Showing {} tasks of {}:\n{}", tasks.len(), total_tasks, task_list);
+        println!(
+            "Showing {} tasks of {}:\n{}",
+            tasks.len(),
+            total_tasks,
+            task_list
+        );
     }
 }
 
@@ -87,7 +101,7 @@ pub fn show(ReadArgs { id }: ReadArgs) {
             task.id,
             task.name,
             task.description.as_deref().unwrap_or("None"),
-            task.tags.as_deref().unwrap_or(&[]).join(", ")
+            format_tags(&task.tags)
         );
     } else {
         eprintln!("Task with ID '{}' not found.", id);
@@ -106,8 +120,11 @@ pub fn remove(ReadArgs { id }: ReadArgs) {
 
     if let Some(pos) = tasks.iter().position(|t| t.id == id) {
         tasks.remove(pos);
-        fs::write(get_task_file(), serde_json::to_string_pretty(&tasks).unwrap())
-            .expect("Failed to write tasks file");
+        fs::write(
+            get_task_file(),
+            serde_json::to_string_pretty(&tasks).unwrap(),
+        )
+        .expect("Failed to write tasks file");
         println!("Task '{}' removed successfully.", id);
     } else {
         eprintln!("Task '{}' not found.", id);
@@ -136,8 +153,11 @@ pub fn update(
             task.tags = Some(new_tags);
         }
 
-        fs::write(get_task_file(), serde_json::to_string_pretty(&tasks).unwrap())
-            .expect("Failed to write tasks file");
+        fs::write(
+            get_task_file(),
+            serde_json::to_string_pretty(&tasks).unwrap(),
+        )
+        .expect("Failed to write tasks file");
         println!("Task '{}' updated successfully.", id);
     } else {
         eprintln!("Task with ID '{}' not found.", id);
