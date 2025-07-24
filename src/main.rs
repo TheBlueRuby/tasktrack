@@ -3,6 +3,10 @@ use clap::Parser;
 pub mod operation;
 use crate::operation::Operation;
 
+pub mod task;
+pub mod fileio;
+pub mod util;
+
 #[derive(Parser, Debug)]
 #[command(version, about, long_about = None)]
 struct Cli {
@@ -18,9 +22,9 @@ fn main() {
             println!("No operation specified. Use --help for more information.");
         }
         Some(op) => match op {
-            Operation::List => todo!(),
+            Operation::List => fileio::list(),
             Operation::Show(read_args) => todo!("{:?}", read_args),
-            Operation::Add(add_args) => todo!("{:?}", add_args),
+            Operation::Add(add_args) => fileio::add(add_args.clone()),
             Operation::Update(update_args) => todo!("{:?}", update_args),
             Operation::Remove(read_args) => todo!("{:?}", read_args),
         },
