@@ -52,7 +52,7 @@ pub fn add(
     tasks.push(new_task);
 
     let task_file = get_task_file();
-    fs::write(task_file, serde_json::to_string(&tasks).unwrap())
+    fs::write(task_file, serde_json::to_string_pretty(&tasks).unwrap())
         .expect("Failed to write tasks file");
 
     println!("Task added successfully.");
@@ -86,7 +86,7 @@ pub fn remove(ReadArgs { id }: ReadArgs) {
 
     if let Some(pos) = tasks.iter().position(|t| t.id == id) {
         tasks.remove(pos);
-        fs::write(get_task_file(), serde_json::to_string(&tasks).unwrap())
+        fs::write(get_task_file(), serde_json::to_string_pretty(&tasks).unwrap())
             .expect("Failed to write tasks file");
         println!("Task '{}' removed successfully.", id);
     } else {
@@ -112,7 +112,7 @@ pub fn update(
             task.description = Some(new_description);
         }
 
-        fs::write(get_task_file(), serde_json::to_string(&tasks).unwrap())
+        fs::write(get_task_file(), serde_json::to_string_pretty(&tasks).unwrap())
             .expect("Failed to write tasks file");
         println!("Task '{}' updated successfully.", id);
     } else {
