@@ -25,7 +25,7 @@ fn main() {
             Operation::List => task::list(),
             Operation::Show(read_args) => task::show(read_args.clone()),
             Operation::Add(add_args) => task::add(add_args.clone()),
-            Operation::Update(update_args) => todo!("{:?}", update_args),
+            Operation::Update(update_args) => task::update(update_args.clone()),
             Operation::Remove(read_args) => task::remove(read_args.clone()),
         },
     }

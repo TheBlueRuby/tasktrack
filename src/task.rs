@@ -3,6 +3,7 @@ use std::fs;
 use serde::{Deserialize, Serialize};
 
 use crate::fileio::{get_task_file, read_task_file};
+use crate::operation::UpdateArgs;
 use crate::{
     operation::{AddArgs, ReadArgs},
     task,
@@ -90,5 +91,31 @@ pub fn remove(ReadArgs { id }: ReadArgs) {
         println!("Task '{}' removed successfully.", id);
     } else {
         eprintln!("Task '{}' not found.", id);
+    }
+}
+
+pub fn update(
+    UpdateArgs {
+        id,
+        name,
+        description,
+    }: UpdateArgs,
+) {
+    let mut tasks: Vec<task::Task> =
+        serde_json::from_str(&read_task_file()).expect("Failed to parse tasks file");
+
+    if let Some(task) = tasks.iter_mut().find(|t| t.id == id) {
+        if let Some(new_name) = name {
+            task.name = new_name;
+        }
+        if let Some(new_description) = description {
+            task.description = Some(new_description);
+        }
+
+        fs::write(get_task_file(), serde_json::to_string(&tasks).unwrap())
+            .expect("Failed to write tasks file");
+        println!("Task '{}' updated successfully.", id);
+    } else {
+        eprintln!("Task with ID '{}' not found.", id);
     }
 }
