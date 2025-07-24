@@ -1,9 +1,9 @@
 use std::{
     env, fs,
-    path::{Path, PathBuf},
+    path::PathBuf,
 };
 
-use crate::{operation::AddArgs, task, util::get_yes_no};
+use crate::{operation::{AddArgs, ReadArgs}, task};
 
 //TODO: custom task and config file
 fn get_task_file() -> String {
@@ -76,4 +76,15 @@ pub fn add(
         .expect("Failed to write tasks file");
 
     println!("Task added successfully.");
+}
+
+pub fn show(ReadArgs { id }: ReadArgs) {
+    let tasks: Vec<task::Task> =
+        serde_json::from_str(&read_task_file()).expect("Failed to parse tasks file");
+
+    if let Some(task) = tasks.iter().find(|t| t.id == id) {
+        println!("ID: {}\nName: {}\nDescription: {}", task.id, task.name, task.description.as_deref().unwrap_or("None"));
+    } else {
+        eprintln!("Task with ID '{}' not found.", id);
+    }
 }

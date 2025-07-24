@@ -11,7 +11,6 @@ pub enum Operation {
 
 #[derive(Args, Debug, Clone)]
 pub struct ReadArgs {
-    #[arg(short, long)]
     pub id: String,
 }
 
