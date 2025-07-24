@@ -20,13 +20,25 @@ pub struct Task {
 pub fn list(ListArgs { tags }: ListArgs) {
     let mut task_list = String::new();
 
-    let tasks: Vec<task::Task> =
+    let mut tasks: Vec<task::Task> =
         serde_json::from_str(&read_task_file()).expect("Failed to parse tasks file");
 
-    for task in tasks {
-        task_list.push_str(&format!("{}: {}\n", task.id, task.name));
+    let total_tasks = tasks.len();
+
+    if let Some(tags) = tags {
+        tasks.retain(|task| {
+            if let Some(task_tags) = &task.tags {
+                task_tags.iter().any(|t| tags.contains(t))
+            } else {
+                false
+            }
+        });
     }
-    println!("{}", task_list);
+    
+    for task in &tasks {
+        task_list.push_str(&format!("{}: {}, Tags: {}\n", task.id, task.name, task.tags.as_deref().unwrap_or(&[]).join(", ")));
+    }
+    println!("Showing {} tasks of {}:\n{}", tasks.len(), total_tasks, task_list);
 }
 
 pub fn add(
